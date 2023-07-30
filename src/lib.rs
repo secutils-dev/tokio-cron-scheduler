@@ -1,3 +1,4 @@
+#![allow(warnings)]
 #[cfg(not(feature = "has_bytes"))]
 #[macro_use]
 extern crate num_derive;
@@ -16,9 +17,11 @@ mod scheduler;
 mod simple;
 mod store;
 
-use std::ops::Add;
-use std::str::FromStr;
-use std::time::{Duration, SystemTime};
+use std::{
+    ops::Add,
+    str::FromStr,
+    time::{Duration, SystemTime},
+};
 
 #[cfg(not(feature = "has_bytes"))]
 use crate::job::job_data::ListOfUuids;
@@ -27,9 +30,15 @@ use crate::job::job_data_prost::ListOfUuids;
 use chrono::{DateTime, Utc};
 use cron::Schedule;
 #[cfg(not(feature = "has_bytes"))]
-use job::job_data::{JobAndNextTick, JobStoredData, Uuid as JobUuid};
+pub use job::job_data::{
+    CronJob, JobAndNextTick, JobIdAndNotification, JobStoredData, JobType, NonCronJob,
+    NotificationData, Uuid as JobUuid,
+};
 #[cfg(feature = "has_bytes")]
-use job::job_data_prost::{JobAndNextTick, JobStoredData, Uuid as JobUuid};
+pub use job::job_data_prost::{
+    CronJob, JobAndNextTick, JobIdAndNotification, JobStoredData, JobType, NonCronJob,
+    NotificationData, Uuid as JobUuid,
+};
 use uuid::Uuid;
 
 #[cfg(feature = "nats_storage")]
@@ -44,12 +53,14 @@ pub use error::JobSchedulerError;
 pub use job::job_data::JobState as JobNotification;
 #[cfg(feature = "has_bytes")]
 pub use job::job_data_prost::JobState as JobNotification;
-pub use job::to_code::{JobCode, NotificationCode, PinnedGetFuture, ToCode};
-pub use job::JobLocked as Job;
-pub use job::OnJobNotification;
-pub use job::{JobBuilder, JobToRun, JobToRunAsync};
+pub use job::{
+    job_data::job_stored_data::Job as JobStored,
+    to_code::{JobCode, NotificationCode, PinnedGetFuture, ToCode},
+    JobBuilder, JobId, JobLocked as Job, JobToRun, JobToRunAsync, NotificationId,
+    OnJobNotification,
+};
 pub use job_scheduler::JobsSchedulerLocked as JobScheduler;
-pub use store::{MetaDataStorage, NotificationStore};
+pub use store::{DataStore, InitStore, MetaDataStorage, NotificationStore};
 
 pub use simple::{
     SimpleJobCode, SimpleMetadataStore, SimpleNotificationCode, SimpleNotificationStore,

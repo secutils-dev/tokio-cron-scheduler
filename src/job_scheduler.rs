@@ -1,17 +1,17 @@
-use crate::context::Context;
-use crate::error::JobSchedulerError;
-use crate::job::to_code::{JobCode, NotificationCode};
-use crate::job::{JobCreator, JobDeleter, JobLocked, JobRunner};
-use crate::notification::{NotificationCreator, NotificationDeleter, NotificationRunner};
-use crate::scheduler::Scheduler;
-use crate::simple::{
-    SimpleJobCode, SimpleMetadataStore, SimpleNotificationCode, SimpleNotificationStore,
+use crate::{
+    context::Context,
+    error::JobSchedulerError,
+    job::{
+        to_code::{JobCode, NotificationCode},
+        JobCreator, JobDeleter, JobLocked, JobRunner,
+    },
+    notification::{NotificationCreator, NotificationDeleter, NotificationRunner},
+    scheduler::Scheduler,
+    simple::{SimpleJobCode, SimpleMetadataStore, SimpleNotificationCode, SimpleNotificationStore},
+    store::{MetaDataStorage, NotificationStore},
 };
-use crate::store::{MetaDataStorage, NotificationStore};
 use chrono::{DateTime, NaiveDateTime, Utc};
-use std::future::Future;
-use std::pin::Pin;
-use std::sync::Arc;
+use std::{future::Future, pin::Pin, sync::Arc};
 #[cfg(feature = "signal")]
 use tokio::signal::unix::SignalKind;
 use tokio::sync::RwLock;

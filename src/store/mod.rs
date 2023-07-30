@@ -1,6 +1,5 @@
 use crate::JobSchedulerError;
-use std::future::Future;
-use std::pin::Pin;
+use std::{future::Future, pin::Pin};
 use uuid::Uuid;
 mod metadata_store;
 mod notification_store;
